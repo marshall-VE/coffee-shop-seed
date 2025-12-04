@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Coffee Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* 2025 hidden gem: component-level responsive */
+    .card {
+      container-type: inline-size;
+    }
+    @container (min-width: 300px) {
+      .card-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+  <header class="text-center p-6">
+    <h1 class="text-3xl font-bold text-gray-800">Copper’s Coffee</h1>
+  </header>
+  <main class="max-w-4xl mx-auto p-4 grid gap-6 md:grid-cols-3">
+    <article class="card bg-white rounded shadow p-4">
+      <h2 class="card-title text-xl font-semibold">Espresso</h2>
+      <p class="mt-2 text-gray-600">Rich and bold.</p>
+      <span class="block mt-3 text-lg font-bold">$2.50</span>
+    </article>
+    <article class="card bg-white rounded shadow p-4">
+      <h2 class="card-title text-xl font-semibold">Cappuccino</h2>
+      <p class="mt-2 text-gray-600">Smooth micro-foam.</p>
+      <span class="block mt-3 text-lg font-bold">$3.50</span>
+    </article>
+    <article class="card bg-white rounded shadow p-4">
+      <h2 class="card-title text-xl font-semibold">Latte</h2>
+      <p class="mt-2 text-gray-600">Creamy and mellow.</p>
+      <span class="block mt-3 text-lg font-bold">$4.00</span>
+    </article>
+  </main>
+</body>
+</html>

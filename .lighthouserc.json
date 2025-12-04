@@ -1,0 +1,18 @@
+{
+  "ci": {
+    "collect": {
+      "staticDistDir": ".",
+      "url": ["http://localhost:5502/index.html"],
+      "settings": {
+        "chromeFlags": "--disable-dev-shm-usage --no-sandbox"
+      }
+    },
+    "assert": {
+      "preset": "lighthouse:recommended",
+      "assertions": {
+        "categories:performance": ["error", { "minScore": 0.95 }],
+        "categories:accessibility": ["error", { "minScore": 0.95 }]
+      }
+    }
+  }
+}
