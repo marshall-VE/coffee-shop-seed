@@ -2,7 +2,7 @@
   "ci": {
     "collect": {
       "staticDistDir": ".",
-      "url": ["http://localhost:5502/index.html"],
+      "url": ["http://localhost:3000"],
       "settings": {
         "chromeFlags": "--disable-dev-shm-usage --no-sandbox"
       }
