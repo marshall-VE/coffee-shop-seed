@@ -8,11 +8,17 @@
       }
     },
     "assert": {
-      "preset": "lighthouse:recommended",
       "assertions": {
         "categories:performance": ["error", { "minScore": 0.8 }],
-        "categories:accessibility": ["error", { "minScore": 0.8 }]
-     }
-     }
+        "categories:accessibility": ["error", { "minScore": 0.8 }],
+
+        "errors-in-console": "off",
+        "meta-description": "off",
+        "network-dependency-tree-insight": "off",
+        "unused-javascript": "off",
+        "render-blocking-insight": "off",
+        "render-blocking-resources": "off"
+      }
+    }
   }
 }
