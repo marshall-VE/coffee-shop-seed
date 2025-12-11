@@ -9,19 +9,50 @@ on:
 jobs:
   lighthouse:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: coffee_shop
+          POSTGRES_USER: coffee_user
+          POSTGRES_PASSWORD: coffee_pass
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+
       - run: npm ci
       - run: npm install -g @lhci/cli
 
-      # start server in background and wait until it responds
+      # push schema & seed data
+      - run: npx prisma db push
+      - run: node prisma/seed.js
+
+      # start Next.js in background and wait
       - name: Start Next.js dev server
         run: |
           npm run dev &
-          npx wait-on http://localhost:3000 --timeout 60000
+          npx wait-on http://localhost:3000 --timeout 120000
 
       - run: lhci autorun
         env:
