@@ -35,6 +35,10 @@ jobs:
         ports:
           - 6379:6379
 
+    env:
+      DATABASE_URL: postgresql://coffee_user:coffee_pass@localhost:5432/coffee_shop
+      REDIS_URL: redis://localhost:6379
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
