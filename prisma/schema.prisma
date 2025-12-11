@@ -4,13 +4,19 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url       = env("DATABASE_URL")
 }
 
+// === ADD THIS BLOCK BELOW ===
+seed {
+  command = "node prisma/seed.js" 
+}
+// ==========================
+
 model Product {
-  id          Int     @id @default(autoincrement())
-  name        String
-  description String
-  price       Float
-  createdAt   DateTime @default(now())
+  id           Int      @id @default(autoincrement())
+  name         String
+  description  String
+  price        Float
+  createdAt    DateTime @default(now())
 }
