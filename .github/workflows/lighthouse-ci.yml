@@ -16,6 +16,13 @@ jobs:
           node-version: 22
       - run: npm ci
       - run: npm install -g @lhci/cli
+
+      # start server in background and wait until it responds
+      - name: Start Next.js dev server
+        run: |
+          npm run dev &
+          npx wait-on http://localhost:3000 --timeout 60000
+
       - run: lhci autorun
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
