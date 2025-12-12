@@ -14,15 +14,24 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      
       - run: npm ci
+      
+      # FIX 1: Generate the Prisma Client before starting the server
+      - name: Generate Prisma Client
+        run: npx prisma generate
+        
       - run: npm install -g @lhci/cli
-
-      # start server in background and wait until it responds
+      
       - name: Start Next.js dev server
         run: |
           npm run dev &
           npx wait-on http://localhost:3000 --timeout 60000
-
+        env:
+          # FIX 2: Give Prisma a dummy URL so it doesn't crash on startup
+          DATABASE_URL: "postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public"
+          
       - run: lhci autorun
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+          DATABASE_URL: "postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public"
