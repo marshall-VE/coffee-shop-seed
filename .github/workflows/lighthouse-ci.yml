@@ -10,14 +10,23 @@ jobs:
   lighthouse:
     runs-on: ubuntu-latest
     
-    # ADDED: This starts a Redis container in the background
     services:
+      # Start Redis
       redis:
         image: redis
         ports:
           - 6379:6379
+      # Start PostgreSQL
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: mydb
+          POSTGRES_USER: johndoe
+          POSTGRES_PASSWORD: randompassword
+        ports:
+          - 5432:5432
         options: >-
-          --health-cmd "redis-cli ping"
+          --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -32,6 +41,12 @@ jobs:
       
       - name: Generate Prisma Client
         run: npx prisma generate
+
+      - name: Push Database Schema
+        # This creates the tables in the temporary Postgres service
+        run: npx prisma db push
+        env:
+          DATABASE_URL: "postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public"
         
       - run: npm install -g @lhci/cli
       
@@ -41,7 +56,6 @@ jobs:
           npx wait-on http://localhost:3000 --timeout 60000
         env:
           DATABASE_URL: "postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public"
-          # ADDED: Tell your app where to find the Redis service
           REDIS_URL: "redis://localhost:6379"
           
       - run: lhci autorun
